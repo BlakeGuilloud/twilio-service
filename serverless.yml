@@ -1,11 +1,45 @@
-service: 8-bit-pets
+service: twilio-services
+
+package:
+  individually: true
+  exclude:
+    - node_modules/**
 
 provider:
   name: aws
-  runtime: nodejs6.10
-
+  runtime: 'nodejs6.10'
   stage: dev
   region: us-east-1
+
+  # iamRoleStatements:
+  #   - Effect: "Allow"
+  #     Action:
+  #       - "dynamodb:*"
+  #     Resource: "arn:aws:dynamodb:us-west-2:055809122680:table/pets"
+functions:
+  receive-message:
+    handler: receive-message/index.receive
+    events:
+      - http:
+          path: message/receive
+          method: post
+          cors: true
+  send-message:
+    handler: send-message/index.send
+    package:
+      include:
+        - node_modules/**
+    events:
+      - http:
+          path: message/send
+          method: post
+          cors: true
+    environment:
+      ACCOUNT_SID: 'AC045777d4b85c130ee4a91c41ad1d4ee1'
+      ACCOUNT_TOKEN: '1c935d52d0503c3fa9f8415c63df23ff'
+      FROM_NUMBER: '+18434201265'
+plugins:
+  - serverless-plugin-optimize
 
 # you can add statements to the Lambda function's IAM Role here
 #  iamRoleStatements:
@@ -36,9 +70,6 @@ provider:
 #    - exclude-me.js
 #    - exclude-me-dir/**
 
-functions:
-  hello:
-    handler: handler.hello
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
