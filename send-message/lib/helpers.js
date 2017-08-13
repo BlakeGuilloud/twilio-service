@@ -29,11 +29,19 @@ function handleError(err) {
   };
 }
 
-function fetchPayload({ body, to, from }) {
+function fetchPayload(event) {
+  // parse the incoming event and set default values if none are provided.
+  const {
+    body = 'Heyyo world',
+    to = '+18438126962',
+    from = process.env['FROM_NUMBER'],
+  } = JSON.parse(event);
+
+  // TODO: Add validation of some sort to prevent invalid phone numbers from being passed to twilio.
   return {
-    body: body || 'Default body',
-    to: stripAndShapePhone(to) || '+18438126962',
-    from: stripAndShapePhone(from) || process.env['FROM_NUMBER']
+    body,
+    to: stripAndShapePhone(to),
+    from: stripAndShapePhone(from),
   };
 }
 
