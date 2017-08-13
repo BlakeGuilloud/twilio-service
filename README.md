@@ -1,3 +1,14 @@
-## A collection of twilio related resources hosted by the serverless framework on AWS Lambda and API Gateway.
+## Twilio-service powered by AWS Lambda and hosted on API Gateway.
 
-### W.I.P
+### Send-message
+```javascript
+const url = 'https://irwtq7dtld.execute-api.us-east-1.amazonaws.com/dev/message/send';
+
+const payload = {
+  body: String,
+  to: String,
+  from: String,
+};
+
+axios.post(url, payload);
+```
