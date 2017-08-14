@@ -11,7 +11,7 @@ const {
 } = require('./lib/helpers');
 
 module.exports.send = (event, context, callback) => {
-  client.messages.create(fetchPayload(event))
+  client.messages.create(fetchPayload(event || "{}"))
     .then(message => callback(null, handleSuccess(message)))
     .catch(err => callback(null, handleError(err)));
 };
